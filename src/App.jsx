@@ -1,6 +1,6 @@
 import './App.css'
 
-import { PieChart, Pie } from 'recharts';
+import { PieChart, Pie, BarChart, Bar, CartesianGrid, YAxis, XAxis, Tooltip, Legend } from 'recharts';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -61,7 +61,7 @@ function App() {
         parseInt(statistic.statistics.viewCount, 10)
     }
     ))
-  // console.log(data03);
+  console.log(statistics);
 
   // regionCode 
 
@@ -125,7 +125,7 @@ function App() {
               <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">Choose your region code !</label>
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <input value={regionCode} onChange={handleChange} type="text" name="regionCode" id="regionCode" autoComplete="regionCode" className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="region code"></input>
+                  <input value={regionCode} onChange={handleChange} type="text" name="regionCode" id="regionCode" className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="region code"></input>
                 </div>
               </div>
             </div>
@@ -136,20 +136,33 @@ function App() {
     </form>
     
     <ul className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-          {snippets.map((snippet) => (
-            <li className="text-sm font-medium leading-6 text-gray-900" key={snippet.id}>{snippet.snippet.title}</li>
-          ))}
-        </ul>
+      {snippets.map((snippet) => (
+        <li className="text-sm font-medium leading-6 text-gray-900" key={snippet.id}>{snippet.snippet.title}</li>
+      ))}
+    </ul>
         
-        <PieChart width={400} height={400}>
-          <Pie data={dataViewCount}
-            dataKey="value"
-            cx="50%"
-            cy="50%"
-            outerRadius={60}
-            fill="#8884d8" />
-          <Pie data={dataViewCount} dataKey="value" cx="50%" cy="50%" innerRadius={70} outerRadius={90} fill="#82ca9d" label />
-        </PieChart>
+    <PieChart width={600} height={600}>
+      <Pie data={dataViewCount} dataKey="value" cx="50%" cy="50%" innerRadius={70} outerRadius={90} fill="#82ca9d" label />
+    </PieChart>
+
+    <BarChart
+          width={800}
+          height={500}
+          data={dataViewCount}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="value" fill="#8884d8" />
+        </BarChart>
 
        </div>         
   )
