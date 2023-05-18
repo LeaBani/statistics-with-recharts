@@ -16,7 +16,8 @@ function App() {
   
   // test avec Youtube API
 
-  const [videos, setVideos] = useState([]);
+  const [statistics, setStatistics] = useState([]);
+  const [snippets, setSnippets] = useState([]);
   const [regionCode, setRegionCode] = useState('FR');
 
   const instance = axios.create({
@@ -24,11 +25,22 @@ function App() {
     // headers: {'X-Custom-Header': 'foobar'}
   });
 
-  function fetchApi() {
+  function fetchApiStatistics() {
     instance.get(`/videos?part=statistics&chart=mostPopular&maxResults=10&regionCode=${regionCode}&key=${import.meta.env.VITE_API_KEY}`)
     .then((response) => {
-      console.log(response.data);
-      setVideos(response.data.items);
+      // console.log(response.data);
+      setStatistics(response.data.items);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+  function fetchApiSnippet() {
+    instance.get(`/videos?part=snippet&chart=mostPopular&maxResults=10&regionCode=${regionCode}&key=${import.meta.env.VITE_API_KEY}`)
+    .then((response) => {
+      console.log('snippet', response.data);
+      setSnippets(response.data.items);
     })
     .catch((error) => {
       console.error(error);
@@ -36,20 +48,30 @@ function App() {
   }
   
   useEffect(() => {
-    fetchApi();
+    fetchApiStatistics();
+    fetchApiSnippet();
   }, [regionCode]);
 
   // console.log(data02);
 
   const dataViewCount = 
-    videos.map((video) => (
-    { name: (video.id),
+    statistics.map((statistic) => (
+    { name: (statistic.id),
       value: 
-        parseInt(video.statistics.viewCount, 10)
+        parseInt(statistic.statistics.viewCount, 10)
     }
     ))
   // console.log(data03);
   
+  const dataTitle = 
+  snippets.map((snippet) => (
+  { name: (snippet.id),
+    value: 
+      snippet.snippet.title
+  }
+  ))
+
+  console.log('title', dataTitle);
 
   // regionCode 
 
