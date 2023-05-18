@@ -2,6 +2,7 @@ import './App.css'
 
 import { LineChart, Line, PieChart, Pie } from 'recharts';
 
+import axios from 'axios';
 
 function App() {
 
@@ -27,6 +28,12 @@ function App() {
     { name: 'D1', value: 150 },
     { name: 'D2', value: 50 },
   ];
+
+  // test avec Youtube API
+
+  function fetchApi() {
+    axios('/user/12345');
+  }
 
   return (
     <div>
