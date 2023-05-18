@@ -39,7 +39,7 @@ function App() {
   function fetchApiSnippet() {
     instance.get(`/videos?part=snippet&chart=mostPopular&maxResults=10&regionCode=${regionCode}&key=${import.meta.env.VITE_API_KEY}`)
     .then((response) => {
-      console.log('snippet', response.data);
+      // console.log('snippet', response.data);
       setSnippets(response.data.items);
     })
     .catch((error) => {
@@ -62,16 +62,6 @@ function App() {
     }
     ))
   // console.log(data03);
-  
-  const dataTitle = 
-  snippets.map((snippet) => (
-  { name: (snippet.id),
-    value: 
-      snippet.snippet.title
-  }
-  ))
-
-  console.log('title', dataTitle);
 
   // regionCode 
 
@@ -95,6 +85,13 @@ function App() {
           onChange={handleChange}
         ></input>
       </form>
+      
+      <ul>
+      {snippets.map((snippet) => (
+            <li key={snippet.id}>{snippet.snippet.title}</li>
+      ))
+      }
+      </ul>
 
         <PieChart width={400} height={400}>
           <Pie data={dataViewCount} 
