@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/jsx-no-duplicate-props */
 import './App.css'
 
 import { PieChart, Pie, BarChart, Bar, CartesianGrid, YAxis, XAxis, Tooltip, Legend } from 'recharts';
@@ -39,7 +41,7 @@ function App() {
   function fetchApiSnippet() {
     instance.get(`/videos?part=snippet&chart=mostPopular&maxResults=10&regionCode=${regionCode}&key=${import.meta.env.VITE_API_KEY}`)
     .then((response) => {
-      // console.log('snippet', response.data);
+      console.log('snippet', response.data);
       setSnippets(response.data.items);
     })
     .catch((error) => {
@@ -61,7 +63,7 @@ function App() {
         parseInt(statistic.statistics.viewCount, 10)
     }
     ))
-  console.log(statistics);
+  // console.log(statistics);
 
   // regionCode 
 
@@ -77,7 +79,7 @@ function App() {
 
   return (
 
-    <div className="m-20 p-20 bg-slate-200">
+    <div className="m-20 p-20 bg-slate-200 rounded-md">
     <div>
       <div className="lg:flex lg:items-center lg:justify-between">
         <div className="min-w-0 flex-1">
@@ -135,11 +137,29 @@ function App() {
 
     </form>
     
-    <ul className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-      {snippets.map((snippet) => (
-        <li className="text-sm font-medium leading-6 text-gray-900" key={snippet.id}>{snippet.snippet.title}</li>
+
+    <div className="bg-white py-24 sm:py-32">
+      <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
+        <div className="max-w-2xl">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">What's up?</h2>
+            <p className="mt-6 text-lg leading-8 text-gray-600">Check on the 10 Most Popular Videos in your Region.</p>
+        </div>
+      <ul role="list" className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2">
+        {snippets.map((snippet) => (
+      <li  key={snippet.id}>
+        <div className="flex items-center gap-x-6">
+          <img  alt="image video" src={snippet.snippet.thumbnails.high.url} className="h-20 w-20 rounded-full"></img>
+          <div>
+            <h3 className="text-base font-semibold leading-7 tracking-tight text-gray-900"><a href={`https://www.youtube.com/watch?v=${snippet.id}`}>{snippet.snippet.title}</a></h3>
+            <p className="text-sm font-semibold leading-6 text-indigo-600">{snippet.snippet.channelTitle}</p>
+          </div>
+        </div>
+      </li>
       ))}
-    </ul>
+
+      </ul>
+    </div>
+</div>
         
     <PieChart width={600} height={600}>
       <Pie data={dataViewCount} dataKey="value" cx="50%" cy="50%" innerRadius={70} outerRadius={90} fill="#82ca9d" label />
