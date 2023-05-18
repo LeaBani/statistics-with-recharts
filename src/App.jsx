@@ -17,13 +17,12 @@ function App() {
   // test avec Youtube API
 
   const [videos, setVideos] = useState([]);
+  const [regionCode, setRegionCode] = useState('FR');
 
   const instance = axios.create({
     baseURL: 'https://youtube.googleapis.com/youtube/v3',
     // headers: {'X-Custom-Header': 'foobar'}
   });
-
-  const regionCode = "FR";
 
   function fetchApi() {
     instance.get(`/videos?part=statistics&chart=mostPopular&maxResults=10&regionCode=${regionCode}&key=${import.meta.env.VITE_API_KEY}`)
@@ -51,9 +50,29 @@ function App() {
     ))
   // console.log(data03);
   
+
+  // regionCode 
+
+  function handleChange(event) {
+      setRegionCode(event.target.value);
+  }
+
+  function handleSubmit(event) {
+    // a la soumission du formulaire, évite le rafraichissement de la page par exemple
+    event.preventDefault();
+  }
+
+
   return (
     <div>
       <h1>Statistics</h1>
+
+      <form onSubmit={handleSubmit}>
+        <input 
+          value={regionCode}
+          onChange={handleChange}
+        ></input>
+      </form>
 
         <PieChart width={400} height={400}>
           <Pie data={dataViewCount} 
